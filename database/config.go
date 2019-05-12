@@ -7,7 +7,7 @@ import (
 	"github.com/dakraid/LooM/clog"
 )
 
-type Config struct {
+type config struct {
 	Login    string `json:"login"`
 	Pass     string `json:"pass"`
 	IP       string `json:"ip"`
@@ -15,23 +15,25 @@ type Config struct {
 	Database string `json:"database"`
 }
 
-var jsonIn Config
+var jsonIn config
 
-const config = "database.json"
+const configfile = "database.json"
 
-func ReadJson() {
-	dat, err := ioutil.ReadFile(config)
+func readJson() {
+	dat, err := ioutil.ReadFile(configfile)
 	if err != nil {
-		clog.Fatalf("Couldn't load database config: %v",err)
+		clog.Fatalf("Couldn't load database config: %v", err)
 	}
 
 	err = json.Unmarshal(dat, &jsonIn)
 	if err != nil {
-		clog.Fatalf("Error while loading config: %v",err)
+		clog.Fatalf("Error while loading config: %v", err)
 	}
 }
 
+// GetDataSource() returns a string to be used with the MySQL driver to establish a connection
 func GetDataSource() string {
+	readJson()
 	dataSource := jsonIn.Login + ":" + jsonIn.Pass + "@" + jsonIn.Protocol + "(" + jsonIn.IP + ")/" + jsonIn.Database
 	return dataSource
 }

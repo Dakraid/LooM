@@ -10,8 +10,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 
 	"github.com/andlabs/ui"
-	_ "github.com/andlabs/ui/winmanifest"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/andlabs/ui/winmanifest" // Required for the UI so it can import the CommonControlsV6 used
+	_ "github.com/go-sql-driver/mysql"    // The MySQL driver registers itself as available to the database/sql package
 
 	"github.com/dakraid/LooM/clog"
 	"github.com/dakraid/LooM/database"
@@ -19,8 +19,8 @@ import (
 )
 
 var (
-	loginwin    *ui.Window
-	dataSource  string
+	loginwin   *ui.Window
+	dataSource string
 )
 
 func openBrowser(url string) {
@@ -57,14 +57,14 @@ func hashAndSalt(pwd []byte) string {
 func connectDatabase() *sql.DB {
 	clog.Info("Trying to establish database connection")
 
-	db, err := sql.Open("mysql",dataSource)
+	db, err := sql.Open("mysql", dataSource)
 	if err != nil {
-		clog.Fatalf("Could not establish database connection: %v",err)
+		clog.Fatalf("Could not establish database connection: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		clog.Fatalf("Database connectivity issue: %v",err)
+		clog.Fatalf("Database connectivity issue: %v", err)
 	}
 	defer db.Close()
 
@@ -72,67 +72,68 @@ func connectDatabase() *sql.DB {
 }
 
 func registerAccount(name, hash string) {
+	var err error
 	clog.Info("Trying to establish database connection")
 
-	db, err := sql.Open("mysql",dataSource)
+	db, err := sql.Open("mysql", dataSource)
 	if err != nil {
-		clog.Fatalf("Could not establish database connection: %v",err)
+		clog.Fatalf("Could not establish database connection: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		clog.Fatalf("Database connectivity issue: %v",err)
+		clog.Fatalf("Database connectivity issue: %v", err)
 	}
 	defer db.Close()
 
 	stmtIns, err := db.Prepare("INSERT INTO Accounts (Username,Password) VALUES(?,?)")
 	if err != nil {
-		clog.Errorf("Error while preparing query: %v",err)
+		clog.Errorf("Error while preparing query: %v", err)
 	}
 	defer stmtIns.Close()
 
 	_, err = stmtIns.Exec(name, hash)
 	if err != nil {
-		clog.Errorf("Error inserting new data: %v",err)
+		clog.Errorf("Error inserting new data: %v", err)
 	}
 
 	var result string
 	stmtOut, err := db.Prepare("SELECT 1 FROM Accounts WHERE Username = ?")
 	err = stmtOut.QueryRow(cleanString(name)).Scan(&result)
 	if err != nil {
-		clog.Errorf("Issue while verifying data: %v",err)
-		ui.MsgBoxError(loginwin,"Registration Failure","The username you entered already exists.")
+		clog.Errorf("Issue while verifying data: %v", err)
+		ui.MsgBoxError(loginwin, "Registration Failure", "The username you entered already exists.")
 	} else {
 		clog.Info("Account has been registered")
-		ui.MsgBox(loginwin,"Registration Success","You can now log in using your details.")
+		ui.MsgBox(loginwin, "Registration Success", "You can now log in using your details.")
 	}
 }
 
 func getPassword(name string) string {
 	clog.Info("Trying to establish database connection")
 
-	db, err := sql.Open("mysql",dataSource)
+	db, err := sql.Open("mysql", dataSource)
 	if err != nil {
-		clog.Fatalf("Could not establish database connection: %v",err)
+		clog.Fatalf("Could not establish database connection: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		clog.Fatalf("Database connectivity issue: %v",err)
+		clog.Fatalf("Database connectivity issue: %v", err)
 	}
 	defer db.Close()
 
 	var hash string
 	stmtOut, err := db.Prepare("SELECT Password FROM Accounts WHERE Username = ?")
 	if err != nil {
-		clog.Errorf("Error while preparing query: %v",err)
+		clog.Errorf("Error while preparing query: %v", err)
 	}
 	defer stmtOut.Close()
 
 	err = stmtOut.QueryRow(cleanString(name)).Scan(&hash)
 	if err != nil {
-		clog.Errorf("Issue while scanning data: %v",err)
-		ui.MsgBoxError(loginwin,"Login Failure","The username you entered could not be found.")
+		clog.Errorf("Issue while scanning data: %v", err)
+		ui.MsgBoxError(loginwin, "Login Failure", "The username you entered could not be found.")
 	}
 
 	return hash
@@ -141,7 +142,7 @@ func getPassword(name string) string {
 func cleanString(input string) string {
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
-		clog.Fatalf("Error while cleaning string: %v",err)
+		clog.Fatalf("Error while cleaning string: %v", err)
 	}
 	return reg.ReplaceAllString(input, "")
 }
@@ -149,7 +150,7 @@ func cleanString(input string) string {
 func controlUsername(entry *ui.Entry) {
 	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
 	if err != nil {
-		clog.Fatalf("Error while cleaning string: %v",err)
+		clog.Fatalf("Error while cleaning string: %v", err)
 	}
 	if reg.MatchString(entry.Text()) {
 		entry.SetText(cleanString(entry.Text()))
@@ -176,20 +177,20 @@ func setupLoginForm() ui.Control {
 		if len(usernameIn.Text()) > 0 {
 			clog.Info("Attempting to login user")
 			hash := getPassword(usernameIn.Text())
-				if len(hash) > 0 {
+			if len(hash) > 0 {
 				err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(passwordIn.Text()))
 				if err != nil {
-					clog.Errorf("Password authentication failed: %v",err)
-					ui.MsgBoxError(loginwin,"Login Failure","The password you entered is wrong.")
+					clog.Errorf("Password authentication failed: %v", err)
+					ui.MsgBoxError(loginwin, "Login Failure", "The password you entered is wrong.")
 				} else {
 					clog.Info("Successfully logged in!")
-					ui.MsgBox(loginwin,"Login Success","You have been successfully logged in.")
+					ui.MsgBox(loginwin, "Login Success", "You have been successfully logged in.")
 				}
 			}
 		}
 	})
 
-	vbox.Append(loginbtn,false)
+	vbox.Append(loginbtn, false)
 
 	return vbox
 }
@@ -219,13 +220,12 @@ func setupRegisterForm() ui.Control {
 		hash := hashAndSalt([]byte(passwordIn.Text()))
 		if len(username) == 0 || len(hash) == 0 {
 			clog.Error("Either username or password is left empty")
-			ui.MsgBoxError(loginwin,"Registration Failure","Please enter an username and/or password.")
+			ui.MsgBoxError(loginwin, "Registration Failure", "Please enter an username and/or password.")
 		} else {
-			registerAccount(username,hash)
+			registerAccount(username, hash)
 		}
 	})
-	hbox.Append(registerbtn,true)
-
+	hbox.Append(registerbtn, true)
 
 	tosbtn := ui.NewButton("Terms of Service")
 	tosbtn.OnClicked(func(*ui.Button) {
@@ -233,14 +233,14 @@ func setupRegisterForm() ui.Control {
 		// TODO: Create a proper ToS page and link it here
 		openBrowser("https://netrve.net/")
 	})
-	hbox.Append(tosbtn,true)
+	hbox.Append(tosbtn, true)
 
-	vbox.Append(hbox,false)
-
+	vbox.Append(hbox, false)
 
 	return vbox
 }
 
+// SetupLogin() is the main function that setups the form and returns the window so it can be used in the main thread
 func SetupLogin() *ui.Window {
 	clog.Info("Preparing the login window")
 	loginwin = ui.NewWindow(fmt.Sprintf("Loot Master v%s - Login", version.Version), 340, 220, true)
@@ -263,7 +263,6 @@ func SetupLogin() *ui.Window {
 	tab.Append("Register", setupRegisterForm())
 	tab.SetMargined(1, true)
 
-	database.ReadJson()
 	dataSource = database.GetDataSource()
 
 	return loginwin

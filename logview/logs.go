@@ -4,23 +4,24 @@ import (
 	"fmt"
 
 	"github.com/andlabs/ui"
-	_ "github.com/andlabs/ui/winmanifest"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/andlabs/ui/winmanifest" // Required for the UI so it can import the CommonControlsV6 used
 
 	"github.com/dakraid/LooM/version"
 )
 
 var (
-	logwin      *ui.Window
-	Text        *ui.MultilineEntry
+	logwin *ui.Window
+	text   *ui.MultilineEntry
 )
 
+// AddEntry() is exported so other parts of the program can add their text to the log view
 func AddEntry(input string) {
 	ui.QueueMain(func() {
-		Text.Append(input + "\n")
+		text.Append(input + "\n")
 	})
 }
 
+// SetupLogs() is the main function that setups the form and returns the window so it can be used in the main thread
 func SetupLogs() *ui.Window {
 	logwin = ui.NewWindow(fmt.Sprintf("Loot Master v%s - Logs", version.Version), 480, 300, false)
 	logwin.OnClosing(func(*ui.Window) bool {
@@ -32,9 +33,9 @@ func SetupLogs() *ui.Window {
 		return true
 	})
 
-	Text = ui.NewMultilineEntry()
-	Text.SetReadOnly(true)
-	logwin.SetChild(Text)
+	text = ui.NewMultilineEntry()
+	text.SetReadOnly(true)
+	logwin.SetChild(text)
 	logwin.SetMargined(true)
 
 	return logwin

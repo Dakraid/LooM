@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/rput49agtimst61o?svg=true)](https://ci.appveyor.com/project/Dakraid/loom)
 
 # LooM  - Loot Master for DnD, Pathfinder and More!
 Loot Master - An easy to use loot manager for your tabletop adventures.
