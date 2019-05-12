@@ -1,4 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/rput49agtimst61o?svg=true)](https://ci.appveyor.com/project/Dakraid/loom)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Dakraid/LooM)](https://goreportcard.com/report/github.com/Dakraid/LooM)
 
 # LooM  - Loot Master for DnD, Pathfinder and More!
 Loot Master - An easy to use loot manager for your tabletop adventures.

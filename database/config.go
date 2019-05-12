@@ -19,7 +19,7 @@ var jsonIn config
 
 const configfile = "database.json"
 
-func readJson() {
+func readJSON() {
 	dat, err := ioutil.ReadFile(configfile)
 	if err != nil {
 		clog.Fatalf("Couldn't load database config: %v", err)
@@ -33,7 +33,7 @@ func readJson() {
 
 // GetDataSource returns a string to be used with the MySQL driver to establish a connection
 func GetDataSource() string {
-	readJson()
+	readJSON()
 	dataSource := jsonIn.Login + ":" + jsonIn.Pass + "@" + jsonIn.Protocol + "(" + jsonIn.IP + ")/" + jsonIn.Database
 	return dataSource
 }
