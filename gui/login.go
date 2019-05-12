@@ -240,7 +240,7 @@ func setupRegisterForm() ui.Control {
 	return vbox
 }
 
-// SetupLogin() is the main function that setups the form and returns the window so it can be used in the main thread
+// SetupLogin is the main function that setups the form and returns the window so it can be used in the main thread
 func SetupLogin() *ui.Window {
 	clog.Info("Preparing the login window")
 	loginwin = ui.NewWindow(fmt.Sprintf("Loot Master v%s - Login", version.Version), 340, 220, true)

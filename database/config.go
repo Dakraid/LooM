@@ -31,7 +31,7 @@ func readJson() {
 	}
 }
 
-// GetDataSource() returns a string to be used with the MySQL driver to establish a connection
+// GetDataSource returns a string to be used with the MySQL driver to establish a connection
 func GetDataSource() string {
 	readJson()
 	dataSource := jsonIn.Login + ":" + jsonIn.Pass + "@" + jsonIn.Protocol + "(" + jsonIn.IP + ")/" + jsonIn.Database
