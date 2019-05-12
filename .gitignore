@@ -73,6 +73,7 @@ $RECYCLE.BIN/
 /src/
 
 /util/
-/database/
 
 *.log
+*.json
+!database.example.json

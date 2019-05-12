@@ -3,9 +3,6 @@
 Loot Master - An easy to use loot manager for your tabletop adventures.
   
 **Important Note**  
-The program currently does not allow to be compiled from Github due to the lack of the database package.  
-This package has been omitted to prevent leaking the database login information. I'm still on the lookout for a better solution.
-  
 Everything is very much subject to change, this is also why there aren't many, if any, comments within the code  
 Please excuse this very messy beginning, this project is still pretty much in its infancy  
   

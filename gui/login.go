@@ -263,6 +263,7 @@ func SetupLogin() *ui.Window {
 	tab.Append("Register", setupRegisterForm())
 	tab.SetMargined(1, true)
 
+	database.ReadJson()
 	dataSource = database.GetDataSource()
 
 	return loginwin

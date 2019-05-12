@@ -21,10 +21,8 @@ func showWindow() {
 }
 
 func main() {
-
 	clog.InitLogger()
 	clog.Infof("Starting Loot Master  v%s", version.Version)
 
-	// TODO: Fix the log window. Right now it won't even show up and with other implementations it doesn't update properly.
 	showWindow()
 }
