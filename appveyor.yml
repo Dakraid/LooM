@@ -21,4 +21,4 @@ install:
   - go get github.com/go-sql-driver/mysql
   - go get golang.org/x/crypto/bcrypt
 build_script:
-  - cmd: go build github.com/dakraid/LooM -o LooM.exe
+  - cmd: go build -o LooM.exe github.com/dakraid/LooM
