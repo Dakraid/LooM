@@ -1,4 +1,4 @@
-package gui
+package logview
 
 import (
 	"fmt"
@@ -6,8 +6,6 @@ import (
 	"github.com/andlabs/ui"
 	_ "github.com/andlabs/ui/winmanifest"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/google/logger"
-	"github.com/hpcloud/tail"
 
 	"github.com/dakraid/LooM/version"
 )
@@ -17,22 +15,13 @@ var (
 	Text        *ui.MultilineEntry
 )
 
-func ReadLogs() {
-	t, err := tail.TailFile("output.log", tail.Config{Follow: false})
-
-	if err != nil {
-		logger.Errorf("Failed to tail logs: %v",err)
-	}
-
+func AddEntry(input string) {
 	ui.QueueMain(func() {
-		for line := range t.Lines {
-			Text.Append(line.Text + "\n")
-		}
+		Text.Append(input + "\n")
 	})
 }
 
-func setupLogs() {
-	logger.Info("Preparing the logs window")
+func SetupLogs() *ui.Window {
 	logwin = ui.NewWindow(fmt.Sprintf("Loot Master v%s - Logs", version.Version), 480, 300, false)
 	logwin.OnClosing(func(*ui.Window) bool {
 		ui.Quit()
@@ -48,10 +37,5 @@ func setupLogs() {
 	logwin.SetChild(Text)
 	logwin.SetMargined(true)
 
-	logwin.Show()
-}
-
-func ShowLogs() {
-	ui.Main(setupLogs)
-	// go ReadLogs()
+	return logwin
 }
