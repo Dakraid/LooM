@@ -20,5 +20,6 @@ Please excuse this very messy beginning, this project is still pretty much in it
 - Selling will be fully automatic for all items with a value assigned  
 - Customizable percentages of gold distribution, with presets for "Players evenly, Party 0%" and "Players + Party evenly"  
 - Toggle for "count claimed equipment against gold distribution" and  "count claimed consumables against gold distribution"
+- Toggle for Weightless Coins
 
 Another wish or idea? Feel free to open a ticket under Issues to share your input!
