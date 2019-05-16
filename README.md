@@ -1,5 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/rput49agtimst61o?svg=true)](https://ci.appveyor.com/project/Dakraid/loom)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Dakraid/LooM)](https://goreportcard.com/report/github.com/Dakraid/LooM)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8591935cae9a448680133c3c5dc0b931)](https://www.codacy.com/app/Dakraid/LooM?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Dakraid/LooM&amp;utm_campaign=Badge_Grade)
 
 # LooM  - Loot Master for DnD, Pathfinder and More!
 Loot Master - An easy to use loot manager for your tabletop adventures.
